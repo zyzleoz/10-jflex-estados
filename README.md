@@ -98,7 +98,7 @@ Dentro de STRING, ignora regras de outros tokens (como números).
 
 # Resumo
 ```
-__Conceito__	 __Exemplo JFlex__
+Conceito	     Exemplo JFlex
 Estado padrão	 YYINITIAL
 Criar estado	 %states MEU_ESTADO
 Mudar de estado	 yybegin(ESTADO)
