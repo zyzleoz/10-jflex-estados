@@ -9,11 +9,13 @@
 
 %standalone    // Habilita execução sem JCup.
 %class Scanner // Nome da classe gerada.
+%line
+%column
 
 %{
     // Método auxiliar para imprimir comentários:
     private void imprimirComentario(String texto) {
-        System.out.println("Comentário: " + texto.trim());
+        System.out.println("Comentário (" + yyline + ", " + yycolumn + "): " + texto.trim());
     }
 %}
 
