@@ -13,7 +13,7 @@ Apesar de JFlex não ser uma ferramenta de scraping em si, ele pode ajudar na an
 
 4) Facilitar o pós-processamento dos dados coletados.
 
-Nessa atividade, você está recebendo uma patente americana (United States Patent: 7022487). Usando JFlex, desenvolva um analisador léxico que identifique o seguintes campos da patente:
+Nessa atividade, você está recebendo uma patente americana (United States Patent: 7022487). Usando JFlex, desenvolva um analisador léxico que identifique os seguintes campos da patente:
 
 1) Número (number).
 2) Título.
