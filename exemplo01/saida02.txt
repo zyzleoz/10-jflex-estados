@@ -1,0 +1,4 @@
+Conteúdo do comentário: Isto é um comentário com "aspas escapadas" dentro.
+Conteúdo do comentário: Isto é um teste:
+	Com tabulação e "aspas" internas.
+Fim..
