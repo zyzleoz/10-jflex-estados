@@ -2,6 +2,7 @@
  * Analisador léxico que captura:
  * 1. Texto entre aspas duplas ("..."). 
  * 2. Texto entre aspas simples ('...') DENTRO das aspas duplas.
+ * 3. Suporte a escapes como \", \', \\
  */
 
 %%
@@ -13,51 +14,69 @@
     // Variáveis para armazenar os conteúdos:
     private String conteudoAspasDuplas = "";
     private String conteudoAspasSimples = "";
-    private boolean dentroDeAspasDuplas = false;
 %}
 
-%states STRING_DUPLA, STRING_SIMPLES // Define os nomes dos estados personalizados para ler comentários.
+// Define os nomes dos estados personalizados para ler comentários:
+%states STRING_DUPLA, STRING_SIMPLES 
 
 %%
 
 <YYINITIAL> {
-    "\"" { 
-        yybegin(STRING_DUPLA); 
+    // Ignora espaços, quebras de linha, etc. 
+    [ \t\n\r] { /* Ignora. */ }
+
+    // Ao encontrar aspas duplas, inicia leitura da string principal
+    \" {
+        yybegin(STRING_DUPLA);
         conteudoAspasDuplas = "";
-        dentroDeAspasDuplas = true;
     }
+
     [^] { /* Ignora outros caracteres fora de strings */ }
 }
 
 <STRING_DUPLA> {
-    "\"" { 
+    // Fecha a string de aspas duplas:
+    \" {
         yybegin(YYINITIAL);
-        dentroDeAspasDuplas = false;
         System.out.println("Conteúdo entre aspas duplas: \"" + conteudoAspasDuplas + "\"");
     }
-    "\'" { 
-        if (dentroDeAspasDuplas) {
-            yybegin(STRING_SIMPLES);
-            conteudoAspasSimples = "";
-        } else {
-            conteudoAspasDuplas += "'";
-        }
+
+    // Entra em string de aspas simples se estiver dentro da dupla:
+    \' {
+        yybegin(STRING_SIMPLES);
+        conteudoAspasSimples = "";
     }
-    "\\"["\"""\'""\\"] { conteudoAspasDuplas += yytext().substring(1); }  // Trata escapes (\", \', \\).
-    [^\'\"]+ { conteudoAspasDuplas += yytext(); }
+
+    // Trata escapes primeiro (ordem importa!):
+    \\\\ { conteudoAspasDuplas += "\\"; }
+    \\\" { conteudoAspasDuplas += "\""; }
+    \\\' { conteudoAspasDuplas += "'"; }
+
+    // Adiciona qualquer coisa que não seja barra ou aspas:
+    [^\\\"\'\n\r]+ { conteudoAspasDuplas += yytext(); }  
+    
+    // Qualquer outro caractere (como uma barra isolada etc.):
+    . { conteudoAspasDuplas += yytext(); }
 }
 
 <STRING_SIMPLES> {
-    "\'" { 
+    // Fecha string simples:
+    \' {
         yybegin(STRING_DUPLA);
         System.out.println("  Conteúdo entre aspas simples: '" + conteudoAspasSimples + "'");
     }
-    "\\"["\"""\'\\] { conteudoAspasSimples += yytext().substring(1); }  // Trata escapes (\", \', \\).
-    [^\']+ { conteudoAspasSimples += yytext(); }
-}
 
-// Ignora espaços, quebras de linha, etc. (opcional)
-[ \t\n\r] { /* Ignora */ }
+    // Trata escapes primeiro:
+    \\\\ { conteudoAspasSimples += "\\"; }
+    \\\" { conteudoAspasSimples += "\""; }
+    \\\' { conteudoAspasSimples += "'"; }  
+
+    // Adiciona qualquer coisa que não seja barra ou aspa
+    [^\\\'\n\r]+ { conteudoAspasSimples += yytext(); }
+
+    // Qualquer outro caractere isolado
+    . { conteudoAspasSimples += yytext(); }
+}
 
 /*
 
@@ -67,17 +86,11 @@ STRING_DUPLA: ativo dentro de "...".
 
 STRING_SIMPLES: ativo dentro de '...' (só se estiver dentro de STRING_DUPLA).
 
-Tratamento de Escapes:
-
-Regras como \\[\"\'\\] capturam \", \', e \\ dentro de ambas as strings de comentário.
-
-
-Controle de Contexto:
-
-A variável dentroDeAspasDuplas evita que aspas simples fora de aspas duplas sejam tratadas como comentários.
-
 
 Como testar? 
+
+Mudar de diretório:
+cd exemplo02/ 
 
 Salvar o código num arquivo exemplo.jflex.
 
