@@ -111,7 +111,7 @@ Web Scraping é a técnica de extrair dados de páginas Web automaticamente. Ela
 
 Apesar de JFlex não ser uma ferramenta de scraping em si, ele pode ajudar na análise e extração de dados estruturados ou semiestruturados em páginas HTML. Imagine que você já obteve o conteúdo HTML (por exemplo, salvou a página como texto). Nesse ponto, o JFlex pode ser usado como um analisador léxico personalizado, para:
 
-1) Reconhecer padrões específicos no HTML (como <div class="produto"> ou <span class="preco">).
+1) Reconhecer padrões específicos no HTML (como `<div class="produto">` ou `<span class="preco">`).
 
 2) Extrair dados com regras bem definidas.
 
