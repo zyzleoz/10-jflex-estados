@@ -1,38 +1,60 @@
-/* Analisador léxico para comentários de 
- * linha única (// ...) COM USO DE ESTADOS.
+/* 
+ * Analisador léxico para comentários de 
+ * linha única (// ...) COM USO DE ESTADO,
+ * para controle de contexto.
  */
 
 %%
 
-%standalone    // Habilitar a execução sem JCup.
+%standalone    // Habilitar a execução independente (sem JCup).
 %class Scanner // Nome da classe gerada.
+%line          // Habilita rastreamento da linha.
+%column        // Habilita rastreamento da coluna.
+%type void     // Tipo de retorno do yyle
 
 %{
-    // Variável para armazenar o comentário:
+    // Variável para armazenar o comentário (StringBuilder melhora o desempenho):
     private StringBuilder comentario = new StringBuilder();
+
+    // Método auxiliar para imprimir o comentário:
+    private void imprimirComentario(String texto) {
+        System.out.println("Comentário (linha: " + yyline + ", coluna: " + yycolumn + "): " + texto.trim());
+    }
 %}
 
-%states LINHA_COMENTARIO // Nome personalizado do estado.
+// Nome personalizado do estado:
+%states LINHA_COMENTARIO 
 
 %%
+
 <YYINITIAL> {
-    "//"    { 
-        yybegin(LINHA_COMENTARIO); 
-        comentario.setLength(0);  // Limpar o buffer.
+    "//" {
+        yybegin(LINHA_COMENTARIO);  // Entra no estado de comentário.
+        comentario.setLength(0);    // Limpa o buffer.
     }
-    [^]     { /* Ignorar qualquer caracter fora de comentários. */ }
+
+    [^] { /* Ignorar qualquer caracter fora de comentários. */ }
 }
 
 <LINHA_COMENTARIO> {
-    \n { 
-        yybegin(YYINITIAL);  // Voltar para o estado inicial ao fim da linha.
-        System.out.println("Comentário: " + comentario.toString()); 
+    \n {
+        yybegin(YYINITIAL);  // Retorna ao estado inicial.
+        imprimirComentario(comentario.toString());
+        comentario.setLength(0);    // Limpa o buffer.
     }
-    [^\n]+  { comentario.append(yytext()); }  // Capturar tudo até a quebra de linha.
+
+    [^\n]+ { comentario.append(yytext()); }  // Acumula conteúdo do comentário (captura tudo até a quebra de linha).
 }
 
-// Ignorar espaços, tabulações e quebras de linha fora do comentário.
-[ \t\r] { /* Ignorar. */ }
+
+<<EOF>> {
+    // Se o arquivo terminar enquanto estamos no comentário:
+    if (comentario.length() > 0) {
+        imprimirComentario(comentario.toString());
+        comentario.setLength(0);    // Limpa o buffer.
+    }
+    return; //Termina a execução.
+}
 
 /*
 
@@ -58,6 +80,9 @@ Escalabilidade: fácil adição de novos estados (ex.: para comentários multili
 Controle preciso: transições de estado são visíveis e gerenciáveis.
 
 Como testar? 
+
+Mudar de diretório:
+cd ../exemplo05/ 
 
 Salvar o código num arquivo exemplo.jflex.
 
