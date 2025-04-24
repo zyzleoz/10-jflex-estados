@@ -42,9 +42,9 @@
 
 OBS:
 
-YYINITIAL: estado inicial. Ao encontrar /*, muda para COMENTARIO.
+YYINITIAL: estado inicial. Ao encontrar \/*, muda para COMENTARIO.
 
-COMENTARIO: captura tudo até */, tratando * e quebras de linha.
+COMENTARIO: captura tudo até *\/, tratando * e quebras de linha.
 
 Variável comentario:
 
@@ -54,7 +54,7 @@ Tratamento Especial:
 
 [^*]+ captura qualquer caractere que não seja *.
 
-"*" adiciona um * isolado ao comentário (evita falsos */).
+"*" adiciona um * isolado ao comentário (evita falsos *\/).
 
 Preservação de Formatação: o \n é explicitamente adicionado para manter as quebras de linha originais.
 
