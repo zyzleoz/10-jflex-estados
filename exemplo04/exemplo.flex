@@ -2,29 +2,29 @@
  * Analisador léxico para comentários de linha única (// ...).
  * Ignorar todo o conteúdo fora de comentários.
  * Capturar o texto após // até o fim da linha.
- * Imprimir na tela cada comentário encontrado.
+ * Imprimir na tela cada comentário encontrado com linha e coluna.
  */
 
 %%
 
 %standalone    // Habilita execução sem JCup.
 %class Scanner // Nome da classe gerada.
-%line
-%column
+%line          // Habilita rastreamento da linha.
+%column        // Habilita rastreamento da coluna.
 
 %{
     // Método auxiliar para imprimir comentários:
     private void imprimirComentario(String texto) {
-        System.out.println("Comentário (" + yyline + ", " + yycolumn + "): " + texto.trim());
+        System.out.println("Comentário (linha: " + yyline + ", coluna: " + yycolumn + "): " + texto.trim());
     }
 %}
 
 %%
 
 // Regras:
-"//" [^\n]*   { imprimirComentario(yytext().substring(2)); }  // Captura tudo após //.
-[ \t\r\n]+    { /* Ignora espaços, tabs e quebras de linha */ }
-.             { /* Ignora qualquer outro caractere */ }
+"//"[^\n]*   { imprimirComentario(yytext().substring(2)); }  // Captura o comentário sem o "//".
+[ \t\r\n]+   { /* Ignora espaços, tabs e quebras de linha. */ }
+.            { /* Ignora qualquer outro caractere. */ }
 
 /*
 
@@ -44,6 +44,9 @@ Método imprimirComentario: usa trim() para remover espaços extras no início/f
 
 
 Como testar? 
+
+Mudar de diretório:
+cd ../exemplo04/ 
 
 Salvar o código num arquivo exemplo.jflex.
 
