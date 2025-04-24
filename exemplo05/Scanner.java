@@ -230,8 +230,8 @@ class Scanner {
     private StringBuilder comentario = new StringBuilder();
 
     // Método auxiliar para imprimir o comentário:
-    private void imprimirComentario(String texto) {
-        System.out.println("Comentário (linha: " + yyline + ", coluna: " + yycolumn + "): " + texto.trim());
+    private void imprimirComentario(String texto, int linha, int coluna) {
+        System.out.println("Comentário (linha: " + linha + ", coluna: " + coluna + "): " + texto.trim());
     }
 
 
@@ -604,7 +604,7 @@ class Scanner {
               {
                 // Se o arquivo terminar enquanto estamos no comentário:
     if (comentario.length() > 0) {
-        imprimirComentario(comentario.toString());
+        imprimirComentario(comentario.toString(), yyline, yycolumn);
         comentario.setLength(0);    // Limpa o buffer.
     }
     return; //Termina a execução.
@@ -624,7 +624,7 @@ class Scanner {
           case 6: break;
           case 3: 
             { yybegin(YYINITIAL);  // Retorna ao estado inicial.
-        imprimirComentario(comentario.toString());
+        imprimirComentario(comentario.toString(), yyline, yycolumn);
         comentario.setLength(0);    // Limpa o buffer.
             } 
             // fall through

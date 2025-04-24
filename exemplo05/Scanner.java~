@@ -605,6 +605,7 @@ class Scanner {
                 // Se o arquivo terminar enquanto estamos no comentário:
     if (comentario.length() > 0) {
         imprimirComentario(comentario.toString());
+        comentario.setLength(0);    // Limpa o buffer.
     }
     return; //Termina a execução.
               }
@@ -624,6 +625,7 @@ class Scanner {
           case 3: 
             { yybegin(YYINITIAL);  // Retorna ao estado inicial.
         imprimirComentario(comentario.toString());
+        comentario.setLength(0);    // Limpa o buffer.
             } 
             // fall through
           case 7: break;
