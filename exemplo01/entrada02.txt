@@ -1,0 +1,3 @@
+Olá, mundo!
+"Isto é um comentário com \"aspas escapadas\" dentro". Outro texto ignorado.
+Fim do arquivo.
