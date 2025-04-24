@@ -1,0 +1,4 @@
+Comentário capturado:
+ Este é um comentário
+   com múltiplas linhas
+   e até um * dentro 
