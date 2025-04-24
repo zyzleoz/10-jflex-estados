@@ -11,7 +11,7 @@
 %class Scanner // Nome da classe gerada.
 
 %{
-    // Variável para armazenar o comentário:
+    // Variável para armazenar o comentário (StringBuilder melhora o desempenho):
     private StringBuilder comentario = new StringBuilder();
 %}
 
@@ -28,13 +28,15 @@
         yybegin(YYINITIAL); 
         System.out.println("Comentário capturado:\n" + comentario.toString()); 
     }
-    [^*]+   { comentario.append(yytext()); }  // Captura texto até encontrar *.
-    "*"     { comentario.append('*'); }       // Trata * sozinho (não fecha).
-    \n      { comentario.append('\n'); }      // Preserva quebras de linha.
+    [^*/\n\r]+  { comentario.append(yytext()); }  // Tudo que não é *, / ou quebra
+    "*"        { comentario.append('*'); }
+    "/"        { comentario.append('/'); }
+    \n         { comentario.append('\n'); }
+    \r         { comentario.append('\r'); }
 }
 
-// Ignora espaços/tabulações:
-[ \t\r]    { /* Ignora. */ }
+// Fora do comentário: ignora espaços/tabulações:
+[ \t]    { /* Ignora. */ }
 
 /*
 
