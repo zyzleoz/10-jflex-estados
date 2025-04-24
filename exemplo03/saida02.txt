@@ -1,0 +1,11 @@
+Comentário capturado:
+ Primeiro comentário 
+Comentário capturado:
+
+  Segundo comentário
+  com mais 
+  linhas
+
+Comentário capturado:
+ Comentário com / e * dentro
+e também quebra de linha 
