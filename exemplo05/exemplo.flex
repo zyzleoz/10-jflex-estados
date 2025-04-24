@@ -8,17 +8,17 @@
 
 %standalone    // Habilitar a execução independente (sem JCup).
 %class Scanner // Nome da classe gerada.
-%line          // Habilita rastreamento da linha.
-%column        // Habilita rastreamento da coluna.
-%type void     // Tipo de retorno do yyle
+%line          // Habilita rastreamento da linha atual.
+%column        // Habilita rastreamento da coluna atual.
+%type void     // Especifica o tipo de retorno do yylex().
 
 %{
     // Variável para armazenar o comentário (StringBuilder melhora o desempenho):
     private StringBuilder comentario = new StringBuilder();
 
     // Método auxiliar para imprimir o comentário:
-    private void imprimirComentario(String texto) {
-        System.out.println("Comentário (linha: " + yyline + ", coluna: " + yycolumn + "): " + texto.trim());
+    private void imprimirComentario(String texto, int linha, int coluna) {
+        System.out.println("Comentário (linha: " + linha + ", coluna: " + coluna + "): " + texto.trim());
     }
 %}
 
@@ -39,7 +39,7 @@
 <LINHA_COMENTARIO> {
     \n {
         yybegin(YYINITIAL);  // Retorna ao estado inicial.
-        imprimirComentario(comentario.toString());
+        imprimirComentario(comentario.toString(), yyline, yycolumn);
         comentario.setLength(0);    // Limpa o buffer.
     }
 
@@ -50,7 +50,7 @@
 <<EOF>> {
     // Se o arquivo terminar enquanto estamos no comentário:
     if (comentario.length() > 0) {
-        imprimirComentario(comentario.toString());
+        imprimirComentario(comentario.toString(), yyline, yycolumn);
         comentario.setLength(0);    // Limpa o buffer.
     }
     return; //Termina a execução.
@@ -60,53 +60,33 @@
 
 OBS:
 
-YYINITIAL: estado inicial.
+- YYINITIAL: estado inicial padrão. Ao detectar "//", muda para LINHA_COMENTARIO.
+- LINHA_COMENTARIO: captura os caracteres da linha até a quebra de linha (\n).
+- A quebra de linha finaliza o comentário e retorna ao estado inicial.
+- <<EOF>> garante que comentários no final do arquivo também sejam processados.
 
-Ao encontrar //, muda para o estado LINHA_COMENTARIO e limpa o buffer.
+Vantagens do uso de estados:
+- Clareza no controle de contexto.
+- Escalabilidade para lidar com mais padrões (como multilinha).
+- Isolamento e transições explícitas entre estados.
 
-Ignora todos os outros caracteres.
+Como testar?
 
-LINHA_COMENTARIO: Estado do comentário.
-
-[^\n]+: captura tudo exceto quebra de linha e armazena no StringBuilder.
-
-\n: ao encontrar uma quebra de linha, volta ao estado YYINITIAL e imprime o comentário.
-
-Vantagens dessa abordagem:
-Clareza: separação explícita entre o contexto normal e o de comentário.
-
-Escalabilidade: fácil adição de novos estados (ex.: para comentários multilinha ou strings).
-
-Controle preciso: transições de estado são visíveis e gerenciáveis.
-
-Como testar? 
-
-Mudar de diretório:
 cd ../exemplo05/ 
-
-Salvar o código num arquivo exemplo.jflex.
-
 jflex exemplo.flex
-
 javac Scanner.java
-
 java Scanner entrada01.txt
-
 java Scanner entrada02.txt
 
 Jogando a saída num arquivo:
 
 java Scanner entrada01.txt > saida01.txt
-
 java Scanner entrada02.txt > saida02.txt
 
-Git
+Git:
 
 git add .
-
 git commit -m "Exemplo"
-
 git push
 
 */
-
