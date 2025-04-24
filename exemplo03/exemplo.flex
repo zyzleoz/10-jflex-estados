@@ -59,6 +59,9 @@ Preservação de Formatação: o \n é explicitamente adicionado para manter as 
 
 Como testar? 
 
+Mudar de diretório:
+cd ../exemplo03/ 
+
 Salvar o código num arquivo exemplo.jflex.
 
 jflex exemplo.flex
