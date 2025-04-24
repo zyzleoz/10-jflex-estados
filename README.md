@@ -1,5 +1,12 @@
 # 10-jflex-estados
 
+# Jflex
+Instalação:
+
+`sudo apt update`
+
+`sudo apt install jflex`
+
 # Estados
 Estados em JFlex são usados para lidar com contexto diferentes durante a análise léxica (como um "modo" em que o analisador pode entrar e sair). 
 
