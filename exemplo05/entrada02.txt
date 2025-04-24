@@ -1,0 +1,5 @@
+// Isto é um comentário!
+
+int x = 10;  // Isso também é capturado.
+
+// Mais comentário de linha.
