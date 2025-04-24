@@ -35,29 +35,7 @@
     \r         { comentario.append('\r'); }
 }
 
-// Fora do comentário: ignora espaços/tabulações:
-[ \t]    { /* Ignora. */ }
-
 /*
-
-OBS:
-
-YYINITIAL: estado inicial. Ao encontrar \/*, muda para COMENTARIO.
-
-COMENTARIO: captura tudo até *\/, tratando * e quebras de linha.
-
-Variável comentario:
-
-StringBuilder é usado para eficiência ao concatenar textos longos.
-
-Tratamento Especial:
-
-[^*]+ captura qualquer caractere que não seja *.
-
-"*" adiciona um * isolado ao comentário (evita falsos *\/).
-
-Preservação de Formatação: o \n é explicitamente adicionado para manter as quebras de linha originais.
-
 
 Como testar? 
 
