@@ -1,5 +1,6 @@
 /* 
- * Exemplo de analisador léxico que armazena comentários entre "..." 
+ * Exemplo de analisador léxico que armazena comentários entre "...", 
+ * trata corretamente caracteres escapados como \" \\ \n \t etc
  * e imprime o conteúdo do comentário na tela.
  */
 
@@ -19,18 +20,37 @@
 %%
 
 <YYINITIAL> {
-    [ \t\n\r] { /* Ignora */ } // Ignora quebras de linha, espaços, etc.
-    \"  { yybegin(STRING); conteudoComentario = ""; }  // Inicia o estado STRING ao encontrar ".
-    [^]   { /* Ignora outros caracteres fora de strings. */ }
+    // Ao encontrar aspas, inicia a leitura da string:
+    \" { yybegin(STRING); conteudoComentario = ""; }
+    
+    // Ignora qualquer outro caractere fora de strings:
+    [^] { /* Ignora. */}
 }
 
 <STRING> {
-    \" { 
-        yybegin(YYINITIAL);  // Volta ao estado inicial ao encontrar "
-        System.out.println("Conteúdo do comentário: \"" + conteudoComentario + "\""); 
+    // Aspa escapada (\" -> adiciona uma aspa escapada):
+    \\\" { conteudoComentario += "\""; }
+
+    // Barra invertida escapada (\\ -> adiciona uma barra invertida escapada):
+    \\\\ { conteudoComentario += "\\"; }
+
+    // Quebra de linha escapada (\n -> adiciona nova linha escapada):
+    \\n { conteudoComentario += "\n"; }
+
+    // Tabulação escapada (\t -> adiciona caracter de tabulação escapado):
+    \\t { conteudoComentario += "\t"; }
+
+    // Fecha a string ao encontrar aspas não escapadas:
+    \" {
+        yybegin(YYINITIAL);
+        System.out.println("Conteúdo do comentário: " + conteudoComentario + ".");
     }
-    \\\" { conteudoComentario += "\""; }  // Trata aspas escapadas (\").
-    [^\"]+ { conteudoComentario += yytext(); }  // Adiciona o texto ao conteúdo.
+
+    // Adiciona ao conteúdo qualquer sequência de caracteres que não sejam barra ou aspas:
+    [^\\\"]+ { conteudoComentario += yytext(); }
+
+    // Captura qualquer outro caractere isolado (ex: uma barra sozinha, ou caracteres não tratados):
+    . { conteudoComentario += yytext(); }
 }
 
 /*
