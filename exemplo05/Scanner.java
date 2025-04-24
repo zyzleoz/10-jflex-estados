@@ -602,11 +602,14 @@ class Scanner {
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
               {
-                // Se o arquivo terminar enquanto estamos no comentário:
+                // Garantir que, se o último comentário não terminar com \n, ele ainda será impresso antes de sair.
+    // Se o arquivo terminar enquanto estamos no comentário:
     if (comentario.length() > 0) {
         imprimirComentario(comentario.toString(), yyline, yycolumn);
         comentario.setLength(0);    // Limpa o buffer.
     }
+    System.out.println("Fim do arquivo!");
+
     return; //Termina a execução.
               }
       }

@@ -47,12 +47,14 @@
 }
 
 
-<<EOF>> {
+<<EOF>> { // Garantir que, se o último comentário não terminar com \n, ele ainda será impresso antes de sair.
     // Se o arquivo terminar enquanto estamos no comentário:
     if (comentario.length() > 0) {
         imprimirComentario(comentario.toString(), yyline, yycolumn);
         comentario.setLength(0);    // Limpa o buffer.
     }
+    System.out.println("Fim do arquivo!");
+
     return; //Termina a execução.
 }
 
@@ -64,6 +66,17 @@ OBS:
 - LINHA_COMENTARIO: captura os caracteres da linha até a quebra de linha (\n).
 - A quebra de linha finaliza o comentário e retorna ao estado inicial.
 - <<EOF>> garante que comentários no final do arquivo também sejam processados.
+
+O <<EOF>> não é um estado no sentido tradicional do JFlex (como YYINITIAL ou os definidos 
+com %states). Ele é um pseudotoken especial que representa o fim do arquivo ("End Of File").
+Ele é usado para definir o que o analisador léxico deve fazer quando chegar ao final do arquivo 
+de entrada. Usamos o <<EOF>> quando queremos garantir que alguma ação aconteça antes do 
+analisador léxico encerrar, como:
+1) Imprimir um comentário que estava sendo construído.
+2) Liberar recursos.
+3) Fazer alguma ação de finalização ou verificação.
+Neste exemplo, o <<EOF>> foi usado para garantir que, se o último comentário não terminar 
+com \n, ele ainda será impresso antes de sair.
 
 Vantagens do uso de estados:
 - Clareza no controle de contexto.
