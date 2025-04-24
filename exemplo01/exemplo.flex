@@ -57,6 +57,7 @@
 
 Como testar? 
 
+Mudar de diretório:
 cd exemplo01/ 
 
 Salvar o código num arquivo exemplo.jflex.
