@@ -1,0 +1,13 @@
+Olá, mundo!
+
+/* Primeiro comentário */
+
+Código ignorado
+
+/*
+  Segundo comentário
+  com mais 
+  linhas
+*/
+
+Fim do arquivo.

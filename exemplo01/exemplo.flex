@@ -17,17 +17,17 @@
 %%
 
 <YYINITIAL> {
-    \"  { yybegin(STRING); conteudoComentario = ""; }  // Inicia o estado STRING ao encontrar ".
+    "\""  { yybegin(STRING); conteudoComentario = ""; }  // Inicia o estado STRING ao encontrar ".
     [^]   { /* Ignora outros caracteres fora de strings. */ }
 }
 
 <STRING> {
-    \" { 
+    "\"" { 
         yybegin(YYINITIAL);  // Volta ao estado inicial ao encontrar "
         System.out.println("Conteúdo do comentário: \"" + conteudoComentario + "\""); 
     }
-    \\\" { conteudoComentario += "\""; }  // Trata aspas escapadas (\").
-    [^\"]+ { conteudoComentario += yytext(); }  // Adiciona o texto ao conteúdo.
+    "\\\"" { conteudoComentario += "\""; }  // Trata aspas escapadas (\").
+    [^"\""]+ { conteudoComentario += yytext(); }  // Adiciona o texto ao conteúdo.
 }
 
 // Ignora quebras de linha, espaços, etc.
