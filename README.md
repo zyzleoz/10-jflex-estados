@@ -51,8 +51,11 @@ No arquivo .flex, você declara estados na seção %% antes das regras:
 
 flex:
 ```
+
+%%
+
 %{
-// Código Java opcional
+  // Código Java opcional.
 %}
 
 // Declaração de estados (exemplo):
@@ -75,6 +78,7 @@ flex:
   "\\\""   { /* Trata aspas escapadas */ }
   [^\"]+   { /* Adiciona à string */ }
 }
+
 ```
 
 # Como funcionam as transições?
