@@ -1,4 +1,5 @@
-/* Exemplo de analisador léxico que armazena comentários entre "..." 
+/* 
+ * Exemplo de analisador léxico que armazena comentários entre "..." 
  * e imprime o conteúdo do comentário na tela.
  */
 
@@ -12,30 +13,31 @@
     private String conteudoComentario = "";
 %}
 
-%states STRING  // Define um estado personalizado para ler strings.
+// Define um estado personalizado para ler strings:
+%states STRING  
 
 %%
 
 <YYINITIAL> {
-    "\""  { yybegin(STRING); conteudoComentario = ""; }  // Inicia o estado STRING ao encontrar ".
+    [ \t\n\r] { /* Ignora */ } // Ignora quebras de linha, espaços, etc.
+    \"  { yybegin(STRING); conteudoComentario = ""; }  // Inicia o estado STRING ao encontrar ".
     [^]   { /* Ignora outros caracteres fora de strings. */ }
 }
 
 <STRING> {
-    "\"" { 
+    \" { 
         yybegin(YYINITIAL);  // Volta ao estado inicial ao encontrar "
         System.out.println("Conteúdo do comentário: \"" + conteudoComentario + "\""); 
     }
-    "\\\"" { conteudoComentario += "\""; }  // Trata aspas escapadas (\").
-    [^"\""]+ { conteudoComentario += yytext(); }  // Adiciona o texto ao conteúdo.
+    \\\" { conteudoComentario += "\""; }  // Trata aspas escapadas (\").
+    [^\"]+ { conteudoComentario += yytext(); }  // Adiciona o texto ao conteúdo.
 }
-
-// Ignora quebras de linha, espaços, etc.
-[ \t\n\r] { /* Ignora */ }
 
 /*
 
 Como testar? 
+
+cd exemplo01/ 
 
 Salvar o código num arquivo exemplo.jflex.
 
