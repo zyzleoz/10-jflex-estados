@@ -1,5 +1,5 @@
 /* 
- * Analisador léxico para comentários multilinha (/* ... */).
+ * Analisador léxico para comentários multilinha (\/* ... *\/).
  * Ignorar o conteúdo fora dos comentários.
  * Armazenar o texto do comentário em uma variável.
  * Imprimir o comentário capturado ao final.
