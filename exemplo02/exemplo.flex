@@ -90,7 +90,7 @@ STRING_SIMPLES: ativo dentro de '...' (só se estiver dentro de STRING_DUPLA).
 Como testar? 
 
 Mudar de diretório:
-cd exemplo02/ 
+cd ../exemplo02/ 
 
 Salvar o código num arquivo exemplo.jflex.
 
