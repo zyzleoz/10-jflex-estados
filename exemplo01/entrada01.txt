@@ -1,3 +1,0 @@
-Olá, mundo!
-Exemplo: "isto é um comentário ". Outro texto ignorado.
-Fim do arquivo.

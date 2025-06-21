@@ -1,3 +1,0 @@
-  Conteúdo entre aspas simples: 'comentário interno'
-  Conteúdo entre aspas simples: 'outro interno'
-Conteúdo entre aspas duplas: "Texto externo  com "escape" e  de exemplo"

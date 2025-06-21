@@ -1,2 +1,0 @@
-// Comentário de exemplo
-código = 123;  // Outro comentário

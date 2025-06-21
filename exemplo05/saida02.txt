@@ -1,4 +1,0 @@
-Comentário (linha: 0, coluna: 24): Isto é um comentário!
-Comentário (linha: 2, coluna: 40): Isso também é capturado.
-Comentário (linha: 4, coluna: 28): Mais comentário de linha.
-Fim do arquivo!

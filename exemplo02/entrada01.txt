@@ -1,3 +1,0 @@
-Olá, mundo!
-"Texto externo 'comentário interno' e 'outro interno' de exemplo".
-Fim do arquivo.

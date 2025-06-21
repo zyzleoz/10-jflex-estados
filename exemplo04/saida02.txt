@@ -1,4 +1,0 @@
-Comentário (linha: 2, coluna: 0): Este é um comentário
-Comentário (linha: 4, coluna: 13): Isso também é capturado
-Comentário (linha: 6, coluna: 16): Comentário no fim
-Comentário (linha: 8, coluna: 0): Mais comentário de linha.

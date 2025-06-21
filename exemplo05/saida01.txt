@@ -1,3 +1,0 @@
-Comentário (linha: 0, coluna: 24): Comentário de exemplo
-Comentário (linha: 1, coluna: 34): Outro comentário
-Fim do arquivo!

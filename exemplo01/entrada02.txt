@@ -1,7 +1,0 @@
-Olá, mundo!
-"Isto é um comentário com \"aspas escapadas\" dentro". Outro texto ignorado.
-
-Texto qualquer
-"Isto é um teste:\n\tCom tabulação e \"aspas\" internas.\nFim."
-Mais texto fora da string.
-Fim do arquivo.
