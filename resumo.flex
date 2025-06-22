@@ -12,26 +12,26 @@
 
 %{
     // Variável para armazenar o comentário (StringBuilder melhora o desempenho):
-    private StringBuilder comentario = new StringBuilder();
+    private StringBuilder resumo = new StringBuilder();
 %}
 
-%states COMENTARIO
+%states RESUMO
 
 %%
 
 
 
 <YYINITIAL> {
-    "<BR><CENTER><B>Abstract</B></CENTER><P>"   { yybegin(COMENTARIO); comentario.setLength(0); }  // Inicia o comentário.
+    "<BR><CENTER><B>Abstract</B></CENTER><P>"   { yybegin(RESUMO); resumo.setLength(0); }  // Inicia o comentário.
     [^]     { /* Ignora qualquer caracter fora de comentários. */ }
 }
 
-<COMENTARIO> {
+<RESUMO> {
     "</P><HR>" { 
         yybegin(YYINITIAL); 
-        System.out.println("Resumo da patente:\n" + comentario.toString()); 
+        System.out.println("Resumo da patente:\n" + resumo.toString()); 
     }
-    [\w* \s* \'-.]   { comentario.append(yytext()); } 
+    [\w* \s* \'-.]   { resumo.append(yytext()); } 
 }
 
 /*

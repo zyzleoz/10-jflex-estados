@@ -12,26 +12,26 @@
 
 %{
     // Variável para armazenar o comentário (StringBuilder melhora o desempenho):
-    private StringBuilder comentario = new StringBuilder();
+    private StringBuilder titulo = new StringBuilder();
 %}
 
-%states COMENTARIO
+%states TITULO
 
 %%
 
 
 
 <YYINITIAL> {
-    "<font size=\"+1\">"   { yybegin(COMENTARIO); comentario.setLength(0); }  // Inicia o comentário.
+    "<font size=\"+1\">"   { yybegin(TITULO); titulo.setLength(0); }  // Inicia o comentário.
     [^]     { /* Ignora qualquer caracter fora de comentários. */ }
 }
 
-<COMENTARIO> {
+<TITULO> {
     "</font><BR>" { 
         yybegin(YYINITIAL); 
-        System.out.println("Título da patente capturado:\n" + comentario.toString()); 
+        System.out.println("Título da patente capturado:\n" + titulo.toString()); 
     }
-    [a-zA-Z]* \s*  { comentario.append(yytext()); } 
+    [a-zA-Z]* \s*  { titulo.append(yytext()); } 
 }
 
 /*

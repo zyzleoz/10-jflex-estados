@@ -1,4 +1,4 @@
-Resumo da patente:
+Reivindicações da patente:
 What is claimed is:<BR><BR> 1.  A method for identifying agents that modulate the level or activity of a polypyrimidine tract protein comprising contacting a test cell, which contains a polypyrimidine
 tract protein and a cis-acting element of a CD154 3'-untranslated region operatively-linked to a nucleic acid sequence encoding a reporter, with an agent and detecting the expression of a product of the nucleic acid sequence encoding the reporter in the
 test cell.

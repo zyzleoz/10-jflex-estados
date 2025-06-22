@@ -12,26 +12,26 @@
 
 %{
     // Variável para armazenar o comentário (StringBuilder melhora o desempenho):
-    private StringBuilder comentario = new StringBuilder();
+    private StringBuilder data = new StringBuilder();
 %}
 
-%states COMENTARIO
+%states DATA
 
 %%
 
 
 
 <YYINITIAL> {
-    "<TD ALIGN=\"RIGHT\" WIDTH=\"50%\"> <B>"   { yybegin(COMENTARIO); comentario.setLength(0); }  // Inicia o comentário.
+    "<TD ALIGN=\"RIGHT\" WIDTH=\"50%\"> <B>"   { yybegin(DATA); data.setLength(0); }  // Inicia o comentário.
     [^]     { /* Ignora qualquer caracter fora de comentários. */ }
 }
 
-<COMENTARIO> {
+<DATA> {
     "</B></TD></TR></TABLE>" { 
         yybegin(YYINITIAL); 
-        System.out.println("Data da patente:\n" + comentario.toString()); 
+        System.out.println("Data da patente:\n" + data.toString()); 
     }
-    [a-zA-Z]+ \s [0-9]"," \s [0-9]{4}  { comentario.append(yytext()); } 
+    [a-zA-Z]+ \s [0-9]"," \s [0-9]{4}  { data.append(yytext()); } 
 }
 
 /*
